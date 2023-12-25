@@ -42,6 +42,7 @@ export default function VerifyOtp() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const credential = params.get('credential');
+  const organisationName = params.get('organisationName');
 
   //toast
   const handleResend = async () => {

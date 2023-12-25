@@ -8,14 +8,7 @@ export default function Public() {
   useEffect(() => {
     if (user)
       navigate('/')
-    const _isFirstTime = localStorage.getItem('first-time');
-    let isFirstTime = true;
-    if (_isFirstTime)
-      isFirstTime = JSON.parse(_isFirstTime);
-    if (isFirstTime === false)
-      navigate('sign-in');
-    else navigate('/welcome');
-  }, [navigate])
+  }, [navigate, user])
   return (
     <Outlet />
   )

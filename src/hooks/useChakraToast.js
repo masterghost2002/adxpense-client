@@ -1,8 +1,9 @@
 import { useToast } from '@chakra-ui/react';
+import { useCallback } from 'react';
 const useChakraToast = () => {
   const toast = useToast();
   // types are: "success", "info", "warning", "error"
-  const addToast = (newRes) => {
+  const addToast = useCallback((newRes) => {
     toast({
       title: newRes.title,
       description: newRes.message,
@@ -17,7 +18,7 @@ const useChakraToast = () => {
         margin: '10px',
       },
     });
-  };
+  }, [toast]);
 
   return addToast;
 };

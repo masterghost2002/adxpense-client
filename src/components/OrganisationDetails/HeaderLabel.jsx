@@ -1,9 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
-import ActiveStatus from '../ActiveStatus';
-import PauseStatus from '../PauseStatus';
-const HeaderLabel = ({ organisationName, isActive }) => {
+const HeaderLabel = ({ organisationName}) => {
     return (
-        <Flex p={4} width={'100%'} gap={2}>
+        <Flex p={4} width={'100%'} gap={2} alignItems={'center'}>
             <Box flex={1} p={0}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +22,6 @@ const HeaderLabel = ({ organisationName, isActive }) => {
                 >
                     {organisationName}
                 </Text>
-                {isActive === true ? <ActiveStatus /> : <PauseStatus />}
             </Flex>
         </Flex>
     );

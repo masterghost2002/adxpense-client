@@ -6,6 +6,7 @@ export default function MobileWrapper({children}) {
         h='100dvh'
         justifyContent={'center'}
         alignItems={'center'}
+        bg={'#FBFBFB'}
     >
         <Box
             w={{base:"100%", md:"360px"}}

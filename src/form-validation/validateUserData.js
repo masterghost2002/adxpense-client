@@ -1,4 +1,5 @@
 import z from 'zod';
+// eslint-disable-next-line no-useless-escape
 const indianPhoneNumberRegex = /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/;
 const USERROLES = {
     ADMIN: 'admin',

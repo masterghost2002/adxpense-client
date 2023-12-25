@@ -8,6 +8,7 @@ import Splash from '../components/Splash';
 import createAxiosInstance from '../utils/ApiHandler';
 import { SlideFade } from '@chakra-ui/transition';
 import { useLocation } from 'react-router-dom';
+import BottomBar from '../components/BottomBar';
 export default function ProtectedLayout() {
 
   // loading to show splash when user verification is going on during first load
@@ -17,7 +18,10 @@ export default function ProtectedLayout() {
   const setUser = useUserStore(state => state.setUser);
   const navigate = useNavigate();
   const location = useLocation();
+  const pathName = location.pathname;
+ 
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!user) {
       navigate('/welcome');
@@ -39,7 +43,6 @@ export default function ProtectedLayout() {
         }
       }
     )()
-
   }, []);
 
 
@@ -73,6 +76,11 @@ export default function ProtectedLayout() {
         </SlideFade>
 
       </Main>
+      {
+        (pathName === '/' || pathName === '/my-profile' || pathName === '/teams' || pathName === '/expenses') &&
+
+        <BottomBar/>
+      }
     </Flex>
   )
 }

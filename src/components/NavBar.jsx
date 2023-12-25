@@ -60,7 +60,7 @@ export default function NavBar() {
             bg={'white'}
         >
             {
-                pathName === '/' ? <HomeNavbar /> : <NavBarWithBackButton pathName={pathName} />
+                (pathName === '/') ? <HomeNavbar /> : <NavBarWithBackButton pathName={pathName} />
             }
 
 

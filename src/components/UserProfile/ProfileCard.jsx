@@ -46,7 +46,7 @@ const ProfileHeader = ({ userData, isLoggedUser, handleArchive, isLoading }) => 
           fontWeight={400}
           color={'blackAlpha.700'}
         >
-          {RoleToTitle[userData.role]}
+          {RoleToTitle[userData.role]} | {userData.organisationName}
         </Text>
       </Flex>
     </Flex>

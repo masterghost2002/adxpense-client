@@ -12,7 +12,7 @@ export default function DetailsForm({ handleSubmit, formDefaultValues, isLoading
     const [email, setEmail] = useState(formDefaultValues?.email || '');
     const [city, setCity] = useState(formDefaultValues?.city || '');
     const [state, setState] = useState(formDefaultValues?.state || '');
-    const [role, setRole] = useState(formDefaultValues?.role || 'admin');
+    const [role, setRole] = useState(formDefaultValues?.role || 'manager');
     const [phone, setPhone] = useState(formDefaultValues?.phone || '');
 
     // form error handler states, function

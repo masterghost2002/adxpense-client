@@ -20,8 +20,10 @@ export default function SendOtp() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await axios.post(`${config.baseServerUrl}/user/sign-in/send-otp`, { loginCredentials: credential });
-      navigate(`/sign-in/verify-otp?credential=${credential}`);
+      const res = await axios.post(`${config.baseServerUrl}/user/sign-in/send-otp`, { loginCredentials: credential });
+      const {organisationName} = res.data.data;
+      console.log(organisationName);
+      navigate(`/welcome/verify-otp?credential=${credential}&organisationName=${organisationName}`);
     } catch (error) {
       console.log(error);
       const statusCode = error.response.data.statusCode;

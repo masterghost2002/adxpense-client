@@ -28,7 +28,6 @@ const MembersContainer = ({ user }) => {
         <Flex
             p={4}
             boxShadow={'0px 2px 16px 0px rgba(0, 0, 0, 0.05)'}
-            my={'10px'}
             alignItems={'center'}
             gap={5}
             borderRadius={'8px'}

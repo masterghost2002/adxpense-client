@@ -2,14 +2,6 @@ import React  from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { Box } from '@chakra-ui/react';
 
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
-
-
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -25,9 +17,9 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 
 export default function PieChartGraph ({colors, data}) {
     return (
-      <Box height='400px'>
+      <Box height='300px'>
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart width={400} height={400}>
+          <PieChart width={400} height={300}>
             <Pie
               data={data}
               cx="50%"
