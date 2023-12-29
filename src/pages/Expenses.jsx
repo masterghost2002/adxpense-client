@@ -3,8 +3,8 @@ import {Flex,Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import ExpenseSelectorHeader from '../components/Expense/ExpenseSelectorHeader'
 import useUserStore from '../store/useUserStore';
-const today = new Date();
 export default function Expenses() {
+  const today = new Date();
   const [startDate, setStartDate] = useState(new Date(today.setMonth(today.getMonth() - 1)));
   const [endDate, setEndDate] = useState(new Date());
   const [expenseFor, setExpenseFor] = useState('Teams'); // ['Teams', 'Personal']
@@ -44,7 +44,7 @@ export default function Expenses() {
                 borderRadius={'32px'}
                 mr={4}
                 as={Link}
-                // to={`/organisation/${organisationId}/add-user?organisationName=${organisationName}`}
+                to={`/add-expense`}
                 title='add-user-btn'
             >
                 Add Expense

@@ -7,8 +7,8 @@ import ExpenseDetail from '../components/Home/ExpenseDetail'
 import createAxiosInstance from '../utils/ApiHandler';
 import MonthsName from '../constant/MonthsName';
 import useChakraToast from '../hooks/useChakraToast';
-const today = new Date();
 export default function Home() {
+    const today = new Date();
 
     const toast = useChakraToast();
     // get and set yearly data in store and component state

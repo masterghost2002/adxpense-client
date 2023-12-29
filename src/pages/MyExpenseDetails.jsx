@@ -9,8 +9,8 @@ import createAxiosInstance from '../utils/ApiHandler';
 import useChakraToast from '../hooks/useChakraToast';
 import ExportHandler from '../components/Export/ExportHandler';
 const COLORS = ['#FF900E', '#D6BEFC', '#914FEB', '#4BC0C0'];
-const today = new Date();
 export default function MyExpenseDetails() {
+  const today = new Date();
   const toast = useChakraToast();
   // date year selector state
   const [startDate, setStartDate] = useState(new Date(today.setMonth(today.getMonth() - 1)));

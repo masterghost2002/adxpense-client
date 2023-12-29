@@ -7,6 +7,7 @@ const PathnameToHeading = {
     'user-profile':'Profile',
     'teams':'My Team',
     'myexpensesdetail':'My Expenses',
-    'expenses': 'Expenses'
+    'expenses': 'Expenses',
+    'add-expense':'Add Expense',
 }
 export default PathnameToHeading;

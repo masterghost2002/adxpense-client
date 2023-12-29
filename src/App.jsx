@@ -13,6 +13,7 @@ import Expenses from './pages/Expenses'
 import UserProfile from './pages/UserProfile';
 import AddUser from './pages/AddUser';
 import MyExpenseDetails from './pages/MyExpenseDetails'
+import AddExpense from './pages/AddExpense';
 // import Splash from './components/Splash'
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path='organisation/:id/user-profile/:userId' element={<UserProfile/>}/>
           <Route path='my-profile' element={<MyProfile/>}/>
           <Route path='edit-profile' element={<EditUser/>}/>
+          <Route path='add-expense' element={<AddExpense/>}/>
           <Route path='myexpensesdetail' element={<MyExpenseDetails />} />
           <Route path='teams' element={<Teams/>}/>
           <Route path='expenses' element={<Expenses/>}/>
