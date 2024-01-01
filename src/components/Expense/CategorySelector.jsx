@@ -49,8 +49,9 @@ export default function CategorySelector({ setCategory, error, setFormError, val
                     defaultValue={defaultValue}
                     placeholder={placeholder}
                     styles={reactSelectCustomStyle}
-                    isSearchable={true}
+                    isSearchable={false}
                     onChange={handleCategoryChange}
+                    
                 />
                 {
                     isError && <FormErrorMessage>

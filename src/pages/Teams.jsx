@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import createAxiosInstance from '../utils/ApiHandler';
 import UserContainer from '../components/OrganisationDetails/UserContainer';
 import useUserStore from '../store/useUserStore'
-import userOrganisationStore from '../store/useOrganisationStore';
+import useOrganisationStore from '../store/useOrganisationStore';
 import UserContainerSkeletons from '../components/OrganisationDetails/UserContainerSkeletons';
 import NoUsersFound from '../components/OrganisationDetails/NoUsersFound';
 import HeaderLabel from '../components/OrganisationDetails/HeaderLabel';
@@ -21,12 +21,12 @@ export default function Teams() {
     const [isLoading, setIsLoading] = useState(true);
 
     const user = useUserStore(state => state.user);
-    const setOrganisationUsers = userOrganisationStore(state => state.setUsers);
+    const setOrganisationUsers = useOrganisationStore(state => state.setUsers);
 
     // get all members
-    const employees = userOrganisationStore(state => state.employess);
-    const accountantManagers = userOrganisationStore(state => state.accountantManagers);
-    const managers = userOrganisationStore(state => state.managers);
+    const employees = useOrganisationStore(state => state.employess);
+    const accountantManagers = useOrganisationStore(state => state.accountantManagers);
+    const managers = useOrganisationStore(state => state.managers);
 
     const organisationId = user.organisationId;
     const organisationName = user.organisationName;

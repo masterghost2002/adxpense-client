@@ -14,6 +14,10 @@ import UserProfile from './pages/UserProfile';
 import AddUser from './pages/AddUser';
 import MyExpenseDetails from './pages/MyExpenseDetails'
 import AddExpense from './pages/AddExpense';
+import ExpenseDetail from './pages/ExpenseDetail';
+import RejectExpense from './pages/RejectExpense';
+import EditExpense from './pages/EditExpense';
+import ApproveExpense from './pages/ApproveExpense';
 // import Splash from './components/Splash'
 function App() {
   return (
@@ -33,6 +37,10 @@ function App() {
           <Route path='edit-profile' element={<EditUser/>}/>
           <Route path='add-expense' element={<AddExpense/>}/>
           <Route path='myexpensesdetail' element={<MyExpenseDetails />} />
+          <Route path='expense-detail/:id' element={<ExpenseDetail />} />
+          <Route path='expense/:id/reject' element={<RejectExpense />} />
+          <Route path='expense/:id/approve' element={<ApproveExpense />} />
+          <Route path='expense/:id/edit' element={<EditExpense />} />
           <Route path='teams' element={<Teams/>}/>
           <Route path='expenses' element={<Expenses/>}/>
         </Route>

@@ -10,25 +10,23 @@ import FilesInput from '../FormInputs/FilesInput';
 import FileContainer from '../FileContainer';
 import validateExpense from '../../form-validation/validateExpense';
 import useChakraToast from '../../hooks/useChakraToast';
-import { set } from 'zod';
 const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, isLoading }) {
 
     const toast = useChakraToast();
 
+    const date = formDefaultValues?.billingDate?new Date(formDefaultValues?.billingDate?._seconds * 1000):new Date();
     // form state
     const [category, setCategory] = useState(formDefaultValues?.category || 'travel');
     const [expenseNote, setExpenseNote] = useState(formDefaultValues?.expenseNote || '');
     const [amount, setAmount] = useState(formDefaultValues?.amount || '');
-    const [currency, setCurrency] = useState(formDefaultValues?.currency || '');
-    const [billingDate, setBillingDate] = useState(formDefaultValues?.billingDate || new Date());
+    const [currency, setCurrency] = useState(formDefaultValues?.currency || '₹');
+    const [billingDate, setBillingDate] = useState( date);
     const [merchantName, setMerchantName] = useState(formDefaultValues?.merchantName || '');
     const [remarks, setRemarks] = useState(formDefaultValues?.remarks || '');
     const [isAggre, setIsAggre] = useState(formDefaultValues?.isAggre || false);
     const [receipts, setReceipts] = useState(formDefaultValues?.receipts || []);
-
- 
 
     const [formError, setFormError] = useState({
         category: '',
@@ -41,7 +39,8 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
         aggree: '',
     });
 
-    const removeReceipt = (index) => {
+    const removeReceipt = (e,index) => {
+        e.stopPropagation();
         setReceipts(prevState => prevState.filter((file, i) => i !== index));
     };
 
@@ -87,7 +86,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
     const handleChange = (e) => {
         const { name, value } = e.target;
         switch (name) {
-            case 'expensenote':
+            case 'expenseNote':
                 setFormError(prevState => ({
                     ...prevState,
                     expenseNote: ''
@@ -122,7 +121,6 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const { isSuccess, data } = validateForm({ merchantName, remarks, category, amount, expenseNote, currency, billingDate, receipts });
-        console.log({ isSuccess, data });
         if (!isSuccess) return;
         if (!isAggre) {
             setFormError(prevState => ({
@@ -131,8 +129,8 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
             }))
             return;
         }
-        // if (!isSuccess) return;
-        // handleSubmit(data);
+        data.receipts = receipts;
+        handleSubmit(data);
     }
 
 
@@ -151,6 +149,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                 error={formError}
                 setCategory={setCategory}
                 setFormError={setFormError}
+                value = {category}
             />
             <InputGroup
                 label={'Expense Note'}
@@ -159,12 +158,14 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                 placeholder={''}
                 onChange={handleChange}
                 error={formError}
+                value={expenseNote}
             />
             <AmountInput
                 label={'Amount'}
                 placeholder={''}
                 onChange={handleAmountAndCurrencyChange}
                 error={formError}
+                value={amount}
             />
             <DateInput
                 label={'Billing Date'}
@@ -181,6 +182,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                 placeholder={''}
                 onChange={handleChange}
                 error={formError}
+                value={merchantName}
             />
             <InputGroup
                 label={'Remarks'}
@@ -189,6 +191,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                 placeholder={''}
                 onChange={handleChange}
                 error={formError}
+                value={remarks}
             />
             <Flex
                 gap={'20px'}
@@ -200,6 +203,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                             key={`${file.name}-${index}`}
                             index={index}
                             onCancel={removeReceipt}
+                            url={file}
                         />
                     ))
                 }
@@ -208,6 +212,7 @@ export default function AddEditExpenseForm({ handleSubmit, formDefaultValues, is
                     onChange={uploadMultipleFiles}
                     name={'receipts'}
                     id={'receipts'}
+                    
                 />
             </Flex>
             <AggreInput

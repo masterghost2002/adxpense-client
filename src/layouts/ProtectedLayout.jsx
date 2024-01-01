@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Flex } from '@chakra-ui/react';
 import useUserStore from '../store/useUserStore';
+import useOrganisationStore from '../store/useOrganisationStore';
 import NavBar from '../components/NavBar';
 import Main from '../theme/uielements/Main';
 import Splash from '../components/Splash';
@@ -16,6 +17,7 @@ export default function ProtectedLayout() {
 
   const user = useUserStore(state => state.user);
   const setUser = useUserStore(state => state.setUser);
+  const addLoggedUserInMap = useOrganisationStore(state=>state.addLoggedUserInMap);
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -34,6 +36,7 @@ export default function ProtectedLayout() {
           const res = await api.post('/user/validate-token');
           const user = res.data.data;
           setUser(user);
+          addLoggedUserInMap(user)
           setIsLoading(false);
         } catch (error) {
           setIsLoading(false);

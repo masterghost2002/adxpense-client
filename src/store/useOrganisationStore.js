@@ -6,6 +6,7 @@ const initialOrganisation = {
     accountantManagers: [],
     managers: [],
     yearlyExpenses:{},
+    usersMap:{},
 };
 const useUserStore = create(
     persist(
@@ -16,12 +17,24 @@ const useUserStore = create(
                     set({ organisationData });
                 },
                 setUsers: (users) => {
+                    const usersMap = get().usersMap;
+                    for(let i = 0; i<users.length; i++)
+                        usersMap[users[i].id] = users[i];
+                    set({usersMap:usersMap});
                     const employess = users.filter(d => d.role === 'employee');
                     const accountantManagers = users.filter(d => d.role === 'accountant');
                     const managers = users.filter(d => d.role === 'manager');
                     set({ employess });
                     set({ accountantManagers });
                     set({ managers });
+                },
+                addLoggedUserInMap:(userData)=>{
+                    const usersMap = get().usersMap;
+                    usersMap[userData.id] = userData;
+                    set({usersMap:usersMap});
+                },
+                returnUserFromMap:(id)=>{
+                    return get().usersMap[id];
                 },
                 getYearlyData:(year)=>{
                     const yearlyExpenses = get().yearlyExpenses;
@@ -49,6 +62,9 @@ const useUserStore = create(
                         return accountantManagers[accountantManagerIndex]
                 },
                 addNewUser:(userData)=>{
+                    const usersMap = get().usersMap;
+                    usersMap[userData.id] = userData;
+                    set({usersMap:usersMap});
                     switch(userData.role){
                         case 'employee':{
                             set({employess: [...get().employess, userData]});
@@ -66,6 +82,9 @@ const useUserStore = create(
                     }
                 },
                 updateUser: (userId, userData) => {
+                    const usersMap = get().usersMap;
+                    usersMap[userId] = userData;
+                    set({usersMap:usersMap});
                     const employess = get().employess;
                     const employeeIndex = employess.findIndex(employee => employee.id === userId);
                     if (employeeIndex !== -1) {

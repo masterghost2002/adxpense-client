@@ -1,37 +1,40 @@
 import React, { useState } from 'react';
 import { Flex } from '@chakra-ui/react';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import useUserStore from '../store/useUserStore';
-import useChakraToast from '../hooks/useChakraToast';
-import WarningHeader from '../components/Expense/WarningHeader';
 import AddEditExpenseForm from '../components/Expense/AddEditExpenseForm';
-import UploadPage from '../components/UploadPage';
 import createAxiosInstance from '../utils/ApiHandler';
-import {useNavigate} from 'react-router-dom';
-const AddExpense = () => {
+import UploadPage from '../components/UploadPage';
+import useChakraToast from '../hooks/useChakraToast';
+const EditExpense = () => {
 
     const toast = useChakraToast();
-    const [isLoading, setIsLoading] = useState(false);
-    const [progress, setProgress] = useState(0);
-
-
-    const user = useUserStore(state => state.user);
     const navigate = useNavigate();
 
-    const handleExpenseAdd = async (data) => {
+    const [isLoading, setIsLoading] = useState(false); // [true, false
+    const [progress, setProgress] = useState(0);
+    const location = useLocation();
+    const expense = location.state;
+    const user = useUserStore(state => state.user);
+    const { id } = useParams();
+    const handleEdit = async (data) => {
+        const accessToken = user.accessToken;
+        setIsLoading(true);
+        const api = createAxiosInstance(accessToken);
         const formData = new FormData();
         Object.keys(data).forEach(key => {
             if (key !== 'receipts')
                 formData.append(key, data[key]);
+
         });
         data.receipts.forEach((receipt) => {
-            formData.append('files', receipt);
+            if (typeof receipt !== 'string')
+                formData.append('files', receipt);
+            else formData.append('receipts', receipt);
         });
-        const accessToken = user.accessToken;
-        const api = createAxiosInstance(accessToken);
-        setIsLoading(true);
         try {
-            await api.post(
-                '/user/expense/add',
+            await api.put(
+                `/user/expense/update/${id}`,
                 formData,
                 {
                     onUploadProgress: (progressEvent) => {
@@ -45,14 +48,16 @@ const AddExpense = () => {
                     },
                 }
             );
+            setIsLoading(false);
             navigate('/');
-            setIsLoading(false);
-            toast({ title: 'Expense added successfully', status: 'success' });
         } catch (error) {
-            setIsLoading(false);
-            const message = error.response?.data?.message || error.message;
-            toast({ title: 'Something went wrong', status: 'error', message });
+            toast({
+                title:'Server Error',
+                status:'Error',
+                description:'Failed to update expense',
+            })
         }
+        setIsLoading(false);
     };
     return (
         <>
@@ -68,14 +73,15 @@ const AddExpense = () => {
                 flexShrink={0}
                 bg={'white'}
             >
-                <WarningHeader />
                 <AddEditExpenseForm
-                    handleSubmit={handleExpenseAdd}
+                    formDefaultValues={expense}
+                    handleSubmit={handleEdit}
                     isLoading={isLoading}
                 />
             </Flex>
         </>
+
     );
 }
 
-export default AddExpense;
+export default EditExpense;

@@ -3,6 +3,7 @@ import { Flex, VStack, Text, HStack, PinInput, PinInputField, Button, Spinner } 
 import ResendHandler from '../components/verify-otp/ResendHandler'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useUserStore from '../store/useUserStore'
+import useOrganisationStore from '../store/useOrganisationStore';
 import useChakraToast from '../hooks/useChakraToast'
 import createAxiosInstance from '../utils/ApiHandler'
 function OTPBox({ setOtp, otp, isInvalid }) {
@@ -35,6 +36,7 @@ export default function VerifyOtp() {
   const toast = useChakraToast();
 
   const setUser = useUserStore(state => state.setUser);
+  const addLoggedUserInMap = useOrganisationStore(state=>state.addLoggedUserInMap);
 
   // navigation
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ export default function VerifyOtp() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const credential = params.get('credential');
-  const organisationName = params.get('organisationName');
+  
 
   //toast
   const handleResend = async () => {
@@ -72,6 +74,7 @@ export default function VerifyOtp() {
       );
       const data = await res.data.data;
       setUser(data);
+      addLoggedUserInMap(data);
       if (res.status === 200)
         navigate('/');
 

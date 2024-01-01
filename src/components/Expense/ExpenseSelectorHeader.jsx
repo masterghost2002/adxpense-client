@@ -10,7 +10,7 @@ const UserSvg =
         <path d="M5.83382 6.24967C5.83382 3.95217 7.70299 2.08301 10.0005 2.08301C12.298 2.08301 14.1672 3.95217 14.1672 6.24967C14.1672 8.54717 12.298 10.4163 10.0005 10.4163C7.70299 10.4163 5.83382 8.54717 5.83382 6.24967ZM13.4313 11.3089C12.9655 11.1905 12.4588 11.2572 12.0397 11.4906C10.7747 12.1939 9.2263 12.1939 7.9613 11.4906C7.54297 11.2581 7.03548 11.1922 6.56965 11.3089C4.90965 11.728 3.75049 13.2347 3.75049 14.9722V15.8147C3.75049 16.3464 3.89214 16.8663 4.16131 17.3196C4.38047 17.688 4.79133 17.9172 5.23217 17.9172H14.768C15.2088 17.9172 15.6196 17.6888 15.8388 17.3188C16.108 16.8663 16.2497 16.3464 16.2497 15.8147V14.9722C16.2505 13.2347 15.0913 11.728 13.4313 11.3089Z" fill="black" fillOpacity="0.48" />
     </svg>
 
-const ExpenseStatusButton = ({title, isActive, onClick})=>{
+const ExpenseStatusButton = ({ title, isActive, onClick }) => {
     return (
         <Button
             onClick={onClick}
@@ -18,7 +18,7 @@ const ExpenseStatusButton = ({title, isActive, onClick})=>{
             h={'30'}
             p={'4px 14px'}
             color={isActive ? '#914FFB' : 'rgba(0, 0, 0, 0.40)'}
-            borderBottom={isActive?'2px solid #914FFB':'2px solid var(--gray-200, #E2E8F0)'}
+            borderBottom={isActive ? '2px solid #914FFB' : '2px solid var(--gray-200, #E2E8F0)'}
             borderRadius={'0px'}
             w={'77px'}
             flexShrink={0}
@@ -47,15 +47,24 @@ const ExpenseSwitcherButton = ({ title, isActive, onClick }) => {
         </Button>
     )
 }
-const ExpenseSelectorHeader = ({ startDate, endDate, setStartDate, setEndDate,expenseFor, setExpenseFor, currentExpenseStatus, setCurrentExpenseStatus, role }) => {
+const ExpenseSelectorHeader = ({ startDate, endDate, setStartDate, setEndDate, expenseFor, setExpenseFor, currentExpenseStatus, setCurrentExpenseStatus, role }) => {
     const handleExpenseForChange = () => {
         if (expenseFor === 'Teams')
-            setExpenseFor('Personal');
-        else 
-            setExpenseFor('Teams');
+            setExpenseFor(prev => {
+                prev.set('expenseFor', 'Personal')
+                return prev;
+            });
+        else
+            setExpenseFor(prev => {
+                prev.set('expenseFor', 'Teams')
+                return prev;
+            });
     };
     const handleCurrentExpenseStatusChange = (status) => {
-        setCurrentExpenseStatus(status);
+        setCurrentExpenseStatus(prev => {
+            prev.set('currentExpenseStatus', status)
+            return prev;
+        });
     }
     return (
         <Flex
@@ -94,7 +103,7 @@ const ExpenseSelectorHeader = ({ startDate, endDate, setStartDate, setEndDate,ex
             >
                 <ExpenseSwitcherButton
                     title={'Teams'}
-                    onClick={handleExpenseForChange}
+                    onClick={(handleExpenseForChange)}
                     isActive={expenseFor === 'Teams'}
                 />
                 <ExpenseSwitcherButton
@@ -109,14 +118,14 @@ const ExpenseSelectorHeader = ({ startDate, endDate, setStartDate, setEndDate,ex
                 id='expense-status-div'
             >
                 {
-                    ExpenseStatus.map((status, index) => { 
+                    ExpenseStatus.map((status, index) => {
 
                         return (
                             <ExpenseStatusButton
                                 key={`expense-status-${index}-${status}`}
                                 title={status}
                                 isActive={status === currentExpenseStatus}
-                                onClick={()=>handleCurrentExpenseStatusChange(status)}
+                                onClick={() => handleCurrentExpenseStatusChange(status)}
                             />
                         )
                     })

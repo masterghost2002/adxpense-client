@@ -7,6 +7,7 @@ import ExpenseDetail from '../components/Home/ExpenseDetail'
 import createAxiosInstance from '../utils/ApiHandler';
 import MonthsName from '../constant/MonthsName';
 import useChakraToast from '../hooks/useChakraToast';
+import PendingSettlementsContainer from '../components/Home/PendingSettlementsContainer';
 export default function Home() {
     const today = new Date();
 
@@ -31,7 +32,7 @@ export default function Home() {
     const accessToken = useMemo(()=>user.accessToken, [user.accessToken]);
 
     // 
-    const fetchYearlyData = useCallback(async ()=>{   
+    const fetchYearlyData = useCallback(async ()=>{  
         const api = createAxiosInstance(accessToken);
         try {
             const res = await api.get(`/${role}/organisation/expenses/yearly-expense?date=${currentYear}`);
@@ -42,7 +43,6 @@ export default function Home() {
         } catch (error) {
             const message = error.response?.data?.message || error.message;
             toast({title:'Something went wrong', status:'error', message});
-            setCurrentYear(today)
         }
 
     }, [currentYear,setYearlyDataInStore,accessToken,role, toast]);
@@ -57,6 +57,7 @@ export default function Home() {
             setTotal(data.total);
             
         } catch (error) {
+        
             const message = error.response?.data?.message || error.message;
             toast({title:'Something went wrong', status:'error', message});
         }
@@ -81,6 +82,9 @@ export default function Home() {
             gap={4}
             pb={'100px'}
         >
+            <PendingSettlementsContainer 
+                pendingSettlements = {user.settlements}
+            />
             <Text
                 fontSize={'20px'}
                 fontWeight={600}

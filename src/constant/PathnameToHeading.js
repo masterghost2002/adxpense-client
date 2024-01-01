@@ -9,5 +9,9 @@ const PathnameToHeading = {
     'myexpensesdetail':'My Expenses',
     'expenses': 'Expenses',
     'add-expense':'Add Expense',
+    'expense-detail':'Expense Detail',
+    'reject':'Rejected',
+    'edit':'Edit Expense',
+    'approve':'Approving',
 }
 export default PathnameToHeading;
