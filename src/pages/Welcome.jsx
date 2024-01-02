@@ -3,7 +3,7 @@ import WelcomeImage from '../static/images/Welcome.png'
 import { useNavigate } from "react-router-dom"
 export default function Welcome() {
     const navigate = useNavigate();
-    const handleClick = ()=>{
+    const handleClick = () => {
         localStorage.setItem('first-time', JSON.stringify(false));
         navigate('sign-in')
     }
@@ -35,9 +35,18 @@ export default function Welcome() {
                     Claims Made Easy
                 </Text>
             </Box>
-            <Image
-                src={WelcomeImage}
-            />
+            <Flex
+                justifyContent={'center'}
+                position={'relative'}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="214" height="214" viewBox="0 0 214 214" fill="none">
+                    <circle cx="107" cy="107" r="107" fill="white" fillOpacity="0.05" />
+                </svg>
+                <Image
+                    src={WelcomeImage}
+                    position={'absolute'}
+                />
+            </Flex>
             <Flex
                 flexDirection={'column'}
                 gap={5}

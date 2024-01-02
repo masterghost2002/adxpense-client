@@ -28,14 +28,14 @@ const ApproveExpense = () => {
 
     const { id: expenseId } = useParams();
 
-
     const usersMap = useOrganisationStore(state => state.usersMap);
-    const usersOptions = usersMap ? Object.values(usersMap).map(user => ({
+    const usersOptions = usersMap ? Object.values(usersMap).filter(user => user.role !== 'employee').map(user => ({
         value: user.id,
         label: user.name,
     })) : { label: 'No users found', value: 'no-users-found' };
 
     const loggedUser = useUserStore(state => state.user);
+    const incrementRemainingSettlements = useUserStore(state=>state.incrementRemainingSettlements);
 
     const [remarks, setRemarks] = React.useState('');
     const [selectedUser, setSelectedUser] = React.useState(usersOptions[0].value);
@@ -57,6 +57,9 @@ const ApproveExpense = () => {
         try {
             await api.put(`/manager/expense/approve/${expenseId}`, { settlementBy: selectedUser, approveRemarks: remarks });
             setIsLoading(false);
+            if(loggedUser.id === selectedUser){
+                incrementRemainingSettlements();
+            }
             navigate('/expenses');
         } catch (error) {
             console.log(error);

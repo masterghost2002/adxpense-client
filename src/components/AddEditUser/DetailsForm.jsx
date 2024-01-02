@@ -5,7 +5,7 @@ import RoleSelector from "./RoleSelector";
 import PhoneInput from "../FormInputs/PhoneInput";
 import InputGroup from "../FormInputs/InputGroup";
 import userSchema from '../../form-validation/validateUserData';
-export default function DetailsForm({ handleSubmit, formDefaultValues, isLoading }) {
+export default function DetailsForm({ handleSubmit, formDefaultValues, isLoading, loggedUserRole = 'manager' }) {
    
     // form state
     const [name, setName] = useState(formDefaultValues?.name || '');
@@ -96,12 +96,12 @@ export default function DetailsForm({ handleSubmit, formDefaultValues, isLoading
                 error={formError}
                 value={name}
             />
-            <RoleSelector
+           {loggedUserRole === 'manager' && <RoleSelector
                 setRole={setRole}
                 error={formError}
                 setFormError={setFormError}
                 value={role}
-            />
+            />}
             <InputGroup
                 label={'Email'}
                 h={'48px'}

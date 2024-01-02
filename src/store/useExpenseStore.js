@@ -34,7 +34,7 @@ const useExpenseStore = create(
                         case 'all': {
                             if(flush)
                                 set({ allExpense: data });
-                            else set({approvedExpense:[...get().allExpense, ...data]})
+                            else set({allExpense:[...get().allExpense, ...data]})
                             break;
                         }
                         default:{
@@ -45,9 +45,6 @@ const useExpenseStore = create(
                         }
                     }
                 },
-                getUser: () => get().user,
-                getAccessToken: () => get().user?.accessToken,
-                setCategoryWiseExpense: (data, total) => set({ categoryWiseExpense: { total: total, expenses: data } })
             }
         ),
         {

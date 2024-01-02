@@ -40,6 +40,7 @@ export default function EditUser() {
                 formDefaultValues={userData}
                 handleSubmit={handleSubmit}
                 isLoading={isLoading}
+                loggedUserRole = {loggedUser.role}
             />
         </Flex>
     )

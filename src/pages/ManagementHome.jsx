@@ -8,9 +8,8 @@ import createAxiosInstance from '../utils/ApiHandler';
 import MonthsName from '../constant/MonthsName';
 import useChakraToast from '../hooks/useChakraToast';
 import PendingSettlementsContainer from '../components/Home/PendingSettlementsContainer';
-export default function Home() {
+export default function ManagementHome() {
     const today = new Date();
-
     const toast = useChakraToast();
     // get and set yearly data in store and component state
     const getYearlyData = useOrganisationStore(state=>state.getYearlyData);
@@ -28,6 +27,7 @@ export default function Home() {
 
     //user info
     const user = useUserStore(state=>state.user);
+    const remainingPendingSettlements = useUserStore(state=>state.remainingPendingSettlements);
     const role = useMemo(()=>user.role, [user.role]);
     const accessToken = useMemo(()=>user.accessToken, [user.accessToken]);
 
@@ -83,7 +83,7 @@ export default function Home() {
             pb={'100px'}
         >
             <PendingSettlementsContainer 
-                pendingSettlements = {user.settlements}
+                pendingSettlements = {remainingPendingSettlements}
             />
             <Text
                 fontSize={'20px'}

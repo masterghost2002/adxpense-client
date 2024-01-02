@@ -9,7 +9,8 @@ import HomeActiveSvg from '../static/navbarsvgs/homeActive.svg';
 import TeamsActiveSvg from '../static/navbarsvgs/teamActive.svg';
 import ProfileActiveSvg from '../static/navbarsvgs/profileActive.svg';
 import ExpensesActiveSvg from '../static/navbarsvgs/expensesActive.svg';
-const NavigateOptions = [
+import useUserStore from '../store/useUserStore';
+const NavigateOptionsForManager = [
     {
         to: '/',
         icon: HomeSvg,
@@ -34,7 +35,26 @@ const NavigateOptions = [
         activeIcon:ProfileActiveSvg,
         title: 'Profile'
     },
-
+]
+const NavigateOptions = [
+    {
+        to: '/expenses',
+        icon: ExpensesSvg,
+        activeIcon:ExpensesActiveSvg,
+        title: 'Expenses'
+    },
+    {
+        to: '/',
+        icon: HomeSvg,
+        activeIcon:HomeActiveSvg,
+        title: 'Home'
+    },
+    {
+        to: '/my-profile',
+        icon: ProfileSvg,
+        activeIcon:ProfileActiveSvg,
+        title: 'Profile'
+    },
 ]
 const NavigateButton = ({ onClick, icon,activeIcon, title, isActive }) => {
     return (
@@ -66,7 +86,8 @@ export default function BottomBar() {
     const location = useLocation();
     const pathName = location.pathname;
     const navigate = useNavigate();
-
+    const user = useUserStore(state=>state.user);
+    const userRole = user.role?user.role:'employee'
     return (
         <Flex
             position={'sticky'}
@@ -86,7 +107,22 @@ export default function BottomBar() {
                 bg={'white'}
             >
                 {
-                    NavigateOptions.map((item, index) => {
+                   userRole === 'manager' && NavigateOptionsForManager.map((item, index) => {
+                        return (
+                            <NavigateButton
+                                key={`${index}-${item.to}`}
+                                to={item.to}
+                                icon={item.icon}
+                                activeIcon={item.activeIcon}
+                                title={item.title}
+                                isActive = {pathName === item.to}
+                                onClick={()=>navigate(item.to)}
+                            />
+                        )
+                    })
+                }
+                {
+                   userRole !== 'manager' && NavigateOptions.map((item, index) => {
                         return (
                             <NavigateButton
                                 key={`${index}-${item.to}`}

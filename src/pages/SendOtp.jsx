@@ -26,12 +26,12 @@ export default function SendOtp() {
       navigate(`/welcome/verify-otp?credential=${credential}&organisationName=${organisationName}`);
     } catch (error) {
       console.log(error);
-      const statusCode = error.response.data.statusCode;
-      const message = error.response.data.message;
+      const statusCode = error?.response?.data?.statusCode || 500;
+      const message = error?.response?.data?.message || 'Server Error';
       if (statusCode === 400 || statusCode === 404)
         setIsError({ isError: true, message });
       else toast({
-        title: 'Something went wrong',
+        title: 'Server Error',
         description: 'Please try again later',
         status: 'error',
       })
@@ -91,9 +91,12 @@ export default function SendOtp() {
             <FormControl isInvalid={isError.isError}>
               <Input
                 placeholder='Enter email'
-                variant='filled'
+                variant='outline'
+                bg={'white'}
+                color={'black'}
                 h='48px'
                 onChange={handleChange}
+
               />
               <FormErrorMessage>
                 {isError.message}

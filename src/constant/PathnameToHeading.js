@@ -13,5 +13,6 @@ const PathnameToHeading = {
     'reject':'Rejected',
     'edit':'Edit Expense',
     'approve':'Approving',
+    'to-settle':'Pending Settlements',
 }
 export default PathnameToHeading;

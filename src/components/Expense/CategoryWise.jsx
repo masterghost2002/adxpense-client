@@ -26,7 +26,7 @@ export default function CategoryWise({data, COLORS}) {
             {
                 data.length > 0 && data.map((item, index) => (
                     <CategoryContainer
-                        key={index}
+                        key={`index-${item.name}-${item.value}-${item.perc}`}
                         color={COLORS[index]}
                         category={item.name}
                         price={item.value}

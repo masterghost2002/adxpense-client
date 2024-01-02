@@ -1,2 +1,2 @@
-const ExpenseStatus = ['Pending', 'Approved','Settled', 'Rejected', 'ALL'];
+const ExpenseStatus = ['Pending', 'Approved','Settled', 'Rejected','Drafts', 'ALL'];
 export default ExpenseStatus;

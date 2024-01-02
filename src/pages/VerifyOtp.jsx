@@ -111,7 +111,7 @@ export default function VerifyOtp() {
         <Text
           fontSize={'20px'}
           fontWeight={700}
-          color={'brand_primary.500'}
+          color={'white'}
         >
           Enter OTP
         </Text>

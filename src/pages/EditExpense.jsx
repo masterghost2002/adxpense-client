@@ -53,7 +53,7 @@ const EditExpense = () => {
         } catch (error) {
             toast({
                 title:'Server Error',
-                status:'Error',
+                status:'error',
                 description:'Failed to update expense',
             })
         }

@@ -6,7 +6,7 @@ const makeExpenseDetails = (data) => {
     let total = 0;
     for (let i = 0; i < data.length; i++) {
         const expense = data[i];
-        if (expense.category === 'food') {
+        if (expense.category === 'meals-entertainment') {
             foodTotal += parseInt(expense.amount);
         } else if (expense.category === 'travel') {
             travelTotal += parseInt(expense.amount);
@@ -23,7 +23,7 @@ const makeExpenseDetails = (data) => {
     const miscellaneousPerc = total === 0?0:(miscellaneousTotal / total) * 100;
     return [
         {
-            name: 'Food',
+            name: 'Meals Entertainment',
             value: foodTotal,
             perc: Math.round(foodPerc)
         },

@@ -7,7 +7,22 @@ const useUserStore = create(
             {
                 user:initialUser,
                 categoryWiseExpense:{total:0, expenses:[]},
-                setUser: (userData) => set({ user: userData }),
+                pendingSettlements:[],
+                remainingPendingSettlements:0,
+                setPendingSettlements:(data)=>{
+                    set({pendingSettlements:data, total: data.length});
+                },
+                incrementRemainingSettlements:()=>{
+                    set({remainingPendingSettlements: get().remainingPendingSettlements+1});
+                },
+                addPendingSettlement:(id)=>{
+                    const newPendingSettlements = [...get().pendingSettlements, id];
+                    set({pendingSettlements:newPendingSettlements, remainingPendingSettlements: get().remainingPendingSettlements+1});
+                },
+                setUser: (userData) =>{
+                    const settlementsCount = userData?userData.settlements?userData.settlements.length:0:0;
+                    set({ user: userData, remainingPendingSettlements:settlementsCount });
+                },
                 getUser:()=>get().user,
                 getAccessToken:()=>get().user?.accessToken,
                 setCategoryWiseExpense:(data, total)=>set({categoryWiseExpense:{total:total, expenses:data}})

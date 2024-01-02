@@ -119,7 +119,7 @@ const ExpenseSelectorHeader = ({ startDate, endDate, setStartDate, setEndDate, e
             >
                 {
                     ExpenseStatus.map((status, index) => {
-
+                        if(status === 'Drafts' && expenseFor === 'Teams') return null;
                         return (
                             <ExpenseStatusButton
                                 key={`expense-status-${index}-${status}`}

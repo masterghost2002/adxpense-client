@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Text, Button, Spinner } from '@chakra-ui/react';
 import Select from 'react-select';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import RejectionReasons from '../constant/RejectionReasons';
 import useUserStore from '../store/useUserStore';
 import createAxiosInstance from '../utils/ApiHandler';
@@ -23,6 +23,7 @@ const reactSelectCustomStyle = {
 const RejectExpense = () => {
 
     const toast = useeChakraToast();
+    const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -38,7 +39,7 @@ const RejectExpense = () => {
     const handleRejectRequest =  async ()=>{
         const accessToken = user.accessToken;
         const api = createAxiosInstance(accessToken);
-        const url = `/manager/expense/reject/${expenseId}`;
+        const url = `/user/expense/reject/${expenseId}`;
         setIsLoading(true);
         try {
             await api.put(url, {expenseId, reason: rejectionReason});
@@ -47,6 +48,8 @@ const RejectExpense = () => {
                 description: 'Expense rejected successfully',
                 status: 'success',
             });
+            setIsLoading(false);
+            navigate('/');
         } catch (error) {
             toast({
                 title: 'Error',

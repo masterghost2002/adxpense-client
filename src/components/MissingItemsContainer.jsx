@@ -1,42 +1,42 @@
 import React from 'react';
-import { Button, Flex, Text } from '@chakra-ui/react';
+import { Flex, Text,Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-const PendingSettlementsContainer = ({ pendingSettlements }) => {
-    if (pendingSettlements === 0)
-        return null;
+import useExpenseStore from '../store/useExpenseStore';
+const MissingItemsContainer = () => {
+    const drafts = useExpenseStore(state=>state.drafts);
+    if(drafts.length === 0) return null;
     return (
         <Flex
-            bg={'white'}
+            border={'1px solid rgba(0, 0, 0, 0.05)'}
+            flexDirection={'column'}
             borderRadius={'8px'}
-            direction={'column'}
             p={'12px 20px'}
         >
             <Text
-                color={'#E53E3E'}
                 fontSize={'12px'}
-                fontWeight={700}
+                fontWeight={600}
+                color={'#E53E3E'}
             >
-                Pending Settlements
+                Missing Items
             </Text>
             <Flex
                 justifyContent={'space-between'}
-                alignItems={'center'}
             >
                 <Text
                     fontSize={'32px'}
                     fontWeight={500}
                 >
-                    {pendingSettlements}
+                    {drafts.length}
                 </Text>
                 <Button
                     bg={'rgba(145, 79, 235, 0.05)'}
                     border={'1px solid rgba(145, 79, 235, 0.05)'}
-                    borderRadius={'8px'}
+                    borderRadius={'full'}
                     color={'#914FEB'}
                     as={Link}
-                    to={'/expenses/to-settle'}
+                    to={'/expenses?expenseFor=Personal&currentExpenseStatus=Drafts'}
                 >
-                    Settle up
+                    Add
                 </Button>
             </Flex>
 
@@ -44,4 +44,4 @@ const PendingSettlementsContainer = ({ pendingSettlements }) => {
     );
 }
 
-export default PendingSettlementsContainer;
+export default MissingItemsContainer;

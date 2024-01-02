@@ -8,8 +8,11 @@ import useUserStore from '../store/useUserStore';
 import useOrganisationStore from '../store/useOrganisationStore';
 import createAxiosInstance from '../utils/ApiHandler';
 import useExpenseStore from '../store/useExpenseStore';
+import useChakraToast from '../hooks/useChakraToast';
 export default function Expenses() {
   const today = new Date();
+
+  const toast = useChakraToast();
 
   // user store
   const user = useUserStore(state => state.user);
@@ -59,7 +62,7 @@ export default function Expenses() {
 
   //fetch users
   const fetchUsers = async () => {
-    if(userRole !== 'manager') return;
+    if (userRole !== 'manager') return;
     const token = user.accessToken;
     const organisationId = user.organisationId;
     const api = createAxiosInstance(token);
@@ -80,9 +83,11 @@ export default function Expenses() {
     const accessToken = user.accessToken;
     const api = createAxiosInstance(accessToken);
     const status = currentExpenseStatus.toLocaleLowerCase();
-    let url = '/user/expense/get';
+    let url = '/user/myexpenses';
     if (userRole === 'manager')
       url = '/manager/organisation/expenses';
+    if (status === 'drafts')
+      url = '/user/drafts'
     const last = expenses[expenses.length - 1];
     setIsLoading(true);
     try {
@@ -96,6 +101,11 @@ export default function Expenses() {
       setIsMoreExpense(length === 10);
     } catch (error) {
       console.log(error);
+      toast({
+        title: 'Server Error',
+        description: 'Unable to fetch more expenses',
+        status: 'error'
+      })
     }
     setIsLoading(false);
   };
@@ -105,9 +115,11 @@ export default function Expenses() {
     const accessToken = user.accessToken;
     const api = createAxiosInstance(accessToken);
     const status = currentExpenseStatus.toLocaleLowerCase();
-    let url = '/user/expense/get';
+    let url = '/user/myexpenses';
     if (userRole === 'manager')
       url = '/manager/organisation/expenses';
+    if (status === 'drafts')
+      url = '/user/drafts'
     setIsLoading(true);
     try {
       const res = await api.get(url, { params: { from: startDate, to: endDate, status: status } });
@@ -117,9 +129,13 @@ export default function Expenses() {
       if (length === 0) {
         setIsMoreExpense(false);
       }
-      setIsMoreExpense(length === 10);
+      setIsMoreExpense((length === 10 && status !== 'drafts'));
     } catch (error) {
-      console.log(error);
+      toast({
+        title: 'Server Error',
+        description: 'Unable to fetch more expenses',
+        status: 'error'
+      })
     }
     setIsLoading(false);
   }, [endDate, startDate, userRole, currentExpenseStatus]);

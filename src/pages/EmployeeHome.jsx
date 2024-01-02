@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Text, Button } from '@chakra-ui/react'
 import DateRangeSelector from '../components/DateRangeSelector';
 import TotalExpenseContainer from '../components/Expense/TotalExpenseContainer';
 import CategoryWise from '../components/Expense/CategoryWise';
 import makeExpenseDetails from '../utils/FilterExpenseCategory';
 import useUserStore from '../store/useUserStore';
+import useExpenseStore from '../store/useExpenseStore';
 import createAxiosInstance from '../utils/ApiHandler';
 import useChakraToast from '../hooks/useChakraToast';
 import ExportHandler from '../components/Export/ExportHandler';
+import MissingItemsContainer from '../components/MissingItemsContainer';
+import { Link } from 'react-router-dom';
 const COLORS = ['#FF900E', '#D6BEFC', '#914FEB', '#4BC0C0'];
 export default function MyExpenseDetails() {
   const today = new Date();
@@ -16,6 +19,7 @@ export default function MyExpenseDetails() {
   const [startDate, setStartDate] = useState(new Date(today.setMonth(today.getMonth() - 1)));
   const [endDate, setEndDate] = useState(new Date());
 
+  const setExpenses = useExpenseStore(state => state.setExpense);
   //user data and expense
   const user = useUserStore(state => state.user);
   const categoryWiseExpense  = useUserStore(state=>state.categoryWiseExpense);
@@ -26,6 +30,18 @@ export default function MyExpenseDetails() {
 
 
   const CategoryWiseData = makeExpenseDetails(categoryWiseExpense.expenses);
+
+  const fetchDraftExpenses = useCallback (async ()=>{
+    const api = createAxiosInstance(accessToken);
+    try {
+      const res = await api.get('/user/drafts');
+      const data = res.data.data;
+      setExpenses('drafts', data, true);
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      toast({ title: 'Something went wrong', status: 'error', message });
+    }
+  }, [accessToken, toast])
   //fetch expenses
   const fetchUserExpenses = useCallback(async () => {
     const api = createAxiosInstance(accessToken);
@@ -45,19 +61,27 @@ export default function MyExpenseDetails() {
   }, [startDate, endDate, organisationId, userId, toast, accessToken]);
   useEffect(() => {
     fetchUserExpenses();
-  }, [fetchUserExpenses])
+  }, [fetchUserExpenses]);
+
+  useEffect(()=>{
+    fetchDraftExpenses();
+  }, [fetchDraftExpenses])
 
   return (
+    <>
     <Flex
       p={4}
       height={'100%'}
+      pb={'100px'}
     >
+      
       <Flex
         w={'100%'}
         gap={4}
         flexDirection={'column'}
         py={'20px'}
       >
+        <MissingItemsContainer/>
         <Flex
           alignItems={'center'}
           justifyContent={'space-between'}
@@ -67,7 +91,7 @@ export default function MyExpenseDetails() {
             fontWeight={'600'}
             color={'blackaplha.800'}
           >
-            Expense Details
+            Expense Analysis
           </Text>
         </Flex>
         <Flex
@@ -93,5 +117,24 @@ export default function MyExpenseDetails() {
         />
       </Flex>
     </Flex>
+     <Button
+        position={'sticky'}
+        bottom={{ base: '140px', md: "140px" }}
+        width={'160px'}
+        h={'48px'}
+        bg={'brand_primary.500'}
+        color={'white'}
+        right={'10px'}
+        left={'100%'}
+        borderRadius={'32px'}
+        mr={4}
+        as={Link}
+        to={`/add-expense`}
+        title='add-user-btn'
+      >
+        Add Expense
+      </Button>
+    </>
+    
   )
 }
